@@ -12,7 +12,7 @@ namespace SoftwareVendas
         string connectionString = @"Server=DESKTOP-P0S20G1\SQLEXPRESS;Database=Software_Vendas_Pai;Trusted_Connection=True;TrustServerCertificate=True;";
 
         // Esta propriedade vai guardar o produto que escolheres para usar depois na fatura
-        public ProdutoDTO ProdutoSelecionado { get; private set; }
+        public ProdutoDTO? ProdutoSelecionado { get; private set; }
 
         public FormProdutos()
         {
@@ -20,7 +20,7 @@ namespace SoftwareVendas
             ConfigurarLista();
         }
 
-        private void label11_Click(object sender, EventArgs e)
+        private void label11_Click(object? sender, EventArgs e)
         {
 
         }
@@ -37,7 +37,7 @@ namespace SoftwareVendas
         // 1. EVENTO DE PESQUISA (Enquanto escreves)
         // =========================================================
         // Associa este evento à tua TextBox (txtPesquisa) -> Propriedades -> Eventos (Raio) -> TextChanged
-        private void txtPesquisa_TextChanged(object sender, EventArgs e)
+        private void txtPesquisa_TextChanged(object? sender, EventArgs e)
         {
             string termo = txtPesquisa.Text.Trim();
 
@@ -76,9 +76,9 @@ namespace SoftwareVendas
                             {
                                 listaProdutos.Add(new ProdutoDTO
                                 {
-                                    Codigo = reader["Codigo"].ToString(),
-                                    Descricao = reader["Descricao"].ToString(),
-                                    Categoria = reader["ID_Tipo"] != DBNull.Value ? reader["ID_Tipo"].ToString() : "Geral",
+                                    Codigo = reader["Codigo"]?.ToString() ?? "",
+                                    Descricao = reader["Descricao"]?.ToString() ?? "",
+                                    Categoria = reader["ID_Tipo"] != DBNull.Value ? reader["ID_Tipo"]?.ToString() ?? "" : "Geral",
 
                                     // Tratamento seguro de números (previne erros se estiver vazio na BD)
                                     Preco = reader["PVP_Unidade"] != DBNull.Value ? Convert.ToDecimal(reader["PVP_Unidade"]) : 0,
@@ -113,7 +113,7 @@ namespace SoftwareVendas
         // 2. EVENTO DE SELEÇÃO (Clicar na Lista)
         // =========================================================
         // Associa à ListBox (lstSugestoes) -> Evento SelectedIndexChanged
-        private void lstSugestoes_SelectedIndexChanged(object sender, EventArgs e)
+        private void lstSugestoes_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (lstSugestoes.SelectedItem == null) return;
 
@@ -145,26 +145,26 @@ namespace SoftwareVendas
         // =========================================================
 
         // Botão Selecionar
-        private void btnSelecionar_Click(object sender, EventArgs e)
+        private void btnSelecionar_Click(object? sender, EventArgs e)
         {
             ConfirmarSelecao();
         }
 
         // Botão Cancelar
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private void btnCancelar_Click(object? sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
         // Atalho: Duplo clique na lista confirma logo
-        private void lstSugestoes_DoubleClick(object sender, EventArgs e)
+        private void lstSugestoes_DoubleClick(object? sender, EventArgs e)
         {
             ConfirmarSelecao();
         }
 
         // Atalho: Enter na lista confirma logo
-        private void lstSugestoes_KeyDown(object sender, KeyEventArgs e)
+        private void lstSugestoes_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -191,10 +191,89 @@ namespace SoftwareVendas
             }
         }
 
-        // O evento do novo botão (Deve estar vazio para depois fazeres a tua magia)
+        // O evento do botão Adicionar Produto
         private void btnAdicionarProduto_Click(object? sender, EventArgs e)
         {
-            // Depois explicarás o que queres que isto faça!
+            using (FormNovoProduto frmNovo = new FormNovoProduto())
+            {
+                // Se a pessoa gravou o produto com sucesso e a janela fechou com OK...
+                if (frmNovo.ShowDialog() == DialogResult.OK)
+                {
+                    // LIMPAMOS A PESQUISA E RECARREGAMOS A LISTA PARA MOSTRAR O NOVO PRODUTO LOGO ALI!
+                    string textoAtual = txtPesquisa.Text;
+                    txtPesquisa.Text = "";
+                    txtPesquisa.Text = textoAtual;
+
+                    MessageBox.Show("A lista foi atualizada com o novo produto.");
+                }
+            }
+        }
+
+        // =========================================================
+        // NOVO: EVENTO DO BOTÃO ELIMINAR PRODUTO
+        // =========================================================
+        private void btnEliminarProduto_Click(object? sender, EventArgs e)
+        {
+            // 1. Verificar se há algum produto selecionado na lista para eliminar
+            if (lstSugestoes.SelectedItem == null)
+            {
+                MessageBox.Show("Por favor, pesquise e selecione um produto na lista para o eliminar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            ProdutoDTO produtoClicado = (ProdutoDTO)lstSugestoes.SelectedItem;
+            string codigoAEliminar = produtoClicado.Codigo;
+
+            // 2. Pedir confirmação dupla (segurança)
+            DialogResult resposta = MessageBox.Show($"Tem a certeza absoluta que deseja eliminar o produto: {codigoAEliminar} - {produtoClicado.Descricao}?\n\nEsta ação não pode ser desfeita!", "Confirmar Eliminação", MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+
+            if (resposta == DialogResult.Yes)
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        con.Open();
+
+                        // 3. SEGURANÇA MÁXIMA: Verificar se o produto já foi vendido (está na Linha_Encomenda)
+                        string queryVerificacao = "SELECT COUNT(*) FROM Linha_Encomenda WHERE Codigo_Material = @cod";
+                        using (SqlCommand cmdVerifica = new SqlCommand(queryVerificacao, con))
+                        {
+                            cmdVerifica.Parameters.AddWithValue("@cod", codigoAEliminar);
+                            int vendas = (int)(cmdVerifica.ExecuteScalar() ?? 0);
+
+                            if (vendas > 0)
+                            {
+                                MessageBox.Show("Não é possível eliminar este produto porque ele já faz parte de faturas passadas. Se o apagasse, iria quebrar o histórico de vendas.", "Erro de Segurança", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+
+                        // 4. Se passou pela segurança, elimina o produto da tabela Material
+                        string queryDelete = "DELETE FROM Material WHERE Codigo = @cod";
+                        using (SqlCommand cmdDelete = new SqlCommand(queryDelete, con))
+                        {
+                            cmdDelete.Parameters.AddWithValue("@cod", codigoAEliminar);
+                            cmdDelete.ExecuteNonQuery();
+                        }
+
+                        MessageBox.Show("Produto eliminado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // 5. Limpar os detalhes no ecrã e recarregar a pesquisa
+                        lblCodigo.Text = "...";
+                        lblNome.Text = "...";
+                        lblCategoria.Text = "...";
+                        lblPreco.Text = "...";
+                        lblStock.Text = "...";
+
+                        txtPesquisa.Text = ""; // Força a limpar a lista
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ocorreu um erro ao tentar eliminar o produto: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
 
         public void DefinirPesquisa(string texto)
@@ -205,18 +284,30 @@ namespace SoftwareVendas
             // Como tens o evento TextChanged, a pesquisa arranca sozinha!
             // Se quiseres garantir, podes chamar CarregarSugestoes(texto) aqui também.
         }
+
         public void PrepararModoVendas()
         {
-            // Se vem da Fatura: Mostra Selecionar, Esconde Adicionar Produto
+            // Se vem da Fatura: Mostra Selecionar. Esconde botões de Gestão.
             btnSelecionar.Visible = true;
-            btnAdicionarProduto.Visible = false;
+
+            // Verifica se os botões existem para não dar erro se mudares o design
+            if (this.Controls.Find("btnAdicionarProduto", true).Length > 0)
+                btnAdicionarProduto.Visible = false;
+
+            if (this.Controls.Find("btnEliminarProduto", true).Length > 0)
+                btnEliminarProduto.Visible = false;
         }
 
         public void PrepararModoGestao()
         {
-            // Se vem do Menu: Esconde Selecionar, Mostra Adicionar Produto
+            // Se vem do Menu: Esconde Selecionar. Mostra botões de Gestão.
             btnSelecionar.Visible = false;
-            btnAdicionarProduto.Visible = true;
+
+            if (this.Controls.Find("btnAdicionarProduto", true).Length > 0)
+                btnAdicionarProduto.Visible = true;
+
+            if (this.Controls.Find("btnEliminarProduto", true).Length > 0)
+                btnEliminarProduto.Visible = true;
         }
 
         private void lblStock_MouseClick(object? sender, MouseEventArgs e)
@@ -249,9 +340,9 @@ namespace SoftwareVendas
     // A classe de dados (DTO) atualizada com Categoria
     public class ProdutoDTO
     {
-        public string Codigo { get; set; }
-        public string Descricao { get; set; }
-        public string Categoria { get; set; }
+        public string Codigo { get; set; } = string.Empty;
+        public string Descricao { get; set; } = string.Empty;
+        public string Categoria { get; set; } = string.Empty;
         public decimal Preco { get; set; }
         public int Stock { get; set; }
         public decimal Iva { get; set; }
@@ -263,13 +354,5 @@ namespace SoftwareVendas
         {
             return $"{Codigo} - {Descricao}";
         }
-
-        
     }
-
-
-
-
-
-
 }

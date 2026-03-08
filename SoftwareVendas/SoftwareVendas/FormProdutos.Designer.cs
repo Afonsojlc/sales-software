@@ -49,6 +49,7 @@
             btnSelecionar = new Button();
             btnCancelar = new Button();
             btnAdicionarProduto = new Button();
+            btnEliminarProduto = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -264,6 +265,7 @@
             // btnAdicionarProduto
             // 
             btnAdicionarProduto.BackColor = Color.ForestGreen;
+            btnAdicionarProduto.FlatStyle = FlatStyle.Flat;
             btnAdicionarProduto.Font = new Font("Times New Roman", 13.875F, FontStyle.Bold);
             btnAdicionarProduto.ForeColor = SystemColors.Control;
             btnAdicionarProduto.Location = new Point(484, 1027);
@@ -272,6 +274,21 @@
             btnAdicionarProduto.TabIndex = 16;
             btnAdicionarProduto.Text = "Adicionar Novo Produto";
             btnAdicionarProduto.UseVisualStyleBackColor = false;
+            btnAdicionarProduto.Click += btnAdicionarProduto_Click;
+            // 
+            // btnEliminarProduto
+            // 
+            btnEliminarProduto.BackColor = Color.Firebrick;
+            btnEliminarProduto.FlatStyle = FlatStyle.Flat;
+            btnEliminarProduto.Font = new Font("Times New Roman", 10.875F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEliminarProduto.ForeColor = SystemColors.ControlLightLight;
+            btnEliminarProduto.Location = new Point(1807, 950);
+            btnEliminarProduto.Name = "btnEliminarProduto";
+            btnEliminarProduto.Size = new Size(270, 44);
+            btnEliminarProduto.TabIndex = 17;
+            btnEliminarProduto.Text = "Eliminar Artigo";
+            btnEliminarProduto.UseVisualStyleBackColor = false;
+            btnEliminarProduto.Click += btnEliminarProduto_Click;
             // 
             // FormProdutos
             // 
@@ -279,6 +296,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(2344, 1251);
+            Controls.Add(btnEliminarProduto);
             Controls.Add(btnAdicionarProduto);
             Controls.Add(btnCancelar);
             Controls.Add(btnSelecionar);
@@ -333,5 +351,6 @@
         private Button btnSelecionar;
         private Button btnCancelar;
         private Button btnAdicionarProduto;
+        private Button btnEliminarProduto;
     }
 }

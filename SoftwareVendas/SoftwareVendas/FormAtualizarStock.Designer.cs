@@ -86,7 +86,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Times New Roman", 13.875F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(179, 34);
+            label4.Location = new Point(289, 30);
             label4.Name = "label4";
             label4.Size = new Size(479, 42);
             label4.TabIndex = 13;
@@ -115,7 +115,7 @@
             // numNovoStock
             // 
             numNovoStock.Font = new Font("Times New Roman", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            numNovoStock.Location = new Point(398, 295);
+            numNovoStock.Location = new Point(509, 299);
             numNovoStock.Name = "numNovoStock";
             numNovoStock.Size = new Size(240, 50);
             numNovoStock.TabIndex = 21;
@@ -124,7 +124,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Times New Roman", 13.125F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(145, 298);
+            label1.Location = new Point(256, 302);
             label1.Name = "label1";
             label1.Size = new Size(247, 40);
             label1.TabIndex = 22;
@@ -132,31 +132,37 @@
             // 
             // btnGravar
             // 
+            btnGravar.BackColor = Color.ForestGreen;
+            btnGravar.FlatStyle = FlatStyle.Flat;
             btnGravar.Font = new Font("Times New Roman", 13.875F, FontStyle.Bold);
-            btnGravar.Location = new Point(103, 394);
+            btnGravar.ForeColor = SystemColors.ButtonHighlight;
+            btnGravar.Location = new Point(169, 392);
             btnGravar.Name = "btnGravar";
             btnGravar.Size = new Size(334, 64);
             btnGravar.TabIndex = 23;
             btnGravar.Text = "Atualizar Stock";
-            btnGravar.UseVisualStyleBackColor = true;
+            btnGravar.UseVisualStyleBackColor = false;
             btnGravar.Click += btnGravar_Click;
             // 
             // btnCancelar
             // 
+            btnCancelar.BackColor = Color.Firebrick;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Times New Roman", 13.875F, FontStyle.Bold);
-            btnCancelar.Location = new Point(463, 394);
+            btnCancelar.ForeColor = SystemColors.ButtonHighlight;
+            btnCancelar.Location = new Point(529, 392);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(284, 64);
             btnCancelar.TabIndex = 24;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // FormAtualizarStock
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(880, 550);
+            ClientSize = new Size(1100, 550);
             Controls.Add(btnCancelar);
             Controls.Add(btnGravar);
             Controls.Add(label1);
