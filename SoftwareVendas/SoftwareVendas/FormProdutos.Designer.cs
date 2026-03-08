@@ -48,6 +48,7 @@
             label9 = new Label();
             btnSelecionar = new Button();
             btnCancelar = new Button();
+            btnAdicionarProduto = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -237,7 +238,7 @@
             btnSelecionar.FlatStyle = FlatStyle.Flat;
             btnSelecionar.Font = new Font("Times New Roman", 13.875F, FontStyle.Bold);
             btnSelecionar.ForeColor = Color.White;
-            btnSelecionar.Location = new Point(722, 1027);
+            btnSelecionar.Location = new Point(738, 1027);
             btnSelecionar.Name = "btnSelecionar";
             btnSelecionar.Size = new Size(246, 68);
             btnSelecionar.TabIndex = 14;
@@ -247,15 +248,29 @@
             // 
             // btnCancelar
             // 
+            btnCancelar.BackColor = Color.Firebrick;
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Times New Roman", 13.875F, FontStyle.Bold);
+            btnCancelar.ForeColor = SystemColors.ControlLightLight;
             btnCancelar.Location = new Point(1053, 1027);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(270, 68);
             btnCancelar.TabIndex = 15;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
+            // 
+            // btnAdicionarProduto
+            // 
+            btnAdicionarProduto.BackColor = Color.ForestGreen;
+            btnAdicionarProduto.Font = new Font("Times New Roman", 13.875F, FontStyle.Bold);
+            btnAdicionarProduto.ForeColor = SystemColors.Control;
+            btnAdicionarProduto.Location = new Point(484, 1027);
+            btnAdicionarProduto.Name = "btnAdicionarProduto";
+            btnAdicionarProduto.Size = new Size(514, 68);
+            btnAdicionarProduto.TabIndex = 16;
+            btnAdicionarProduto.Text = "Adicionar Novo Produto";
+            btnAdicionarProduto.UseVisualStyleBackColor = false;
             // 
             // FormProdutos
             // 
@@ -263,6 +278,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(2176, 1189);
+            Controls.Add(btnAdicionarProduto);
             Controls.Add(btnCancelar);
             Controls.Add(btnSelecionar);
             Controls.Add(groupBox1);
@@ -315,5 +331,6 @@
         private Label lblPreco;
         private Button btnSelecionar;
         private Button btnCancelar;
+        private Button btnAdicionarProduto;
     }
 }

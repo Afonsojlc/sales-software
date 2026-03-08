@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj": {}
+    "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj": {
+    "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj",
+        "projectUniqueName": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj",
         "projectName": "SoftwareVendas",
-        "projectPath": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj",
+        "projectPath": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj",
         "packagesPath": "C:\\Users\\Afonso Carvalho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\obj\\",
+        "outputPath": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

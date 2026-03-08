@@ -822,20 +822,45 @@ namespace SoftwareVendas
             // Verifica se há uma linha selecionada
             if (dgvItens.CurrentRow != null && !dgvItens.CurrentRow.IsNewRow)
             {
-                // Pega no Código do Produto (que está na Coluna 0)
-                // CORREÇÃO CS8600: Adicionado "?? string.Empty" para garantir que não é nulo
                 string codigoProduto = dgvItens.CurrentRow.Cells[0].Value?.ToString() ?? "";
 
                 if (!string.IsNullOrEmpty(codigoProduto))
                 {
-                    // Abre a janela de produtos
-                    FormProdutos frm = new FormProdutos();
+                    // Abre a janela de produtos e fica à espera
+                    using (FormProdutos frm = new FormProdutos())
+                    {
+                        // 1. DIZ À JANELA QUE ESTAMOS NO MODO VENDAS (Mostra botão Selecionar)
+                        frm.PrepararModoVendas();
 
-                    // PREENCHE A PESQUISA AUTOMATICAMENTE
-                    // (Isto requer que tenhas criado o método 'DefinirPesquisa' no passo anterior)
-                    frm.DefinirPesquisa(codigoProduto);
+                        // 2. PESQUISA O PRODUTO CLICADO
+                        frm.DefinirPesquisa(codigoProduto);
 
-                    frm.ShowDialog();
+                        // 3. SE O UTILIZADOR CLICAR EM "SELECIONAR" (Trocando o produto)
+                        if (frm.ShowDialog() == DialogResult.OK)
+                        {
+                            if (frm.ProdutoSelecionado != null)
+                            {
+                                // A. Pegar na linha que estava selecionada
+                                DataGridViewRow linha = dgvItens.CurrentRow;
+
+                                // B. Trocar os dados pelo novo Produto Selecionado!
+                                linha.Cells[0].Value = frm.ProdutoSelecionado.Codigo;
+                                linha.Cells[2].Value = frm.ProdutoSelecionado.Descricao;
+                                linha.Cells[3].Value = frm.ProdutoSelecionado.Preco.ToString("C2");
+
+                                // C. (Opcional) Limpar o desconto, já que é um produto novo
+                                linha.Cells[4].Value = "";
+
+                                // Se por acaso a quantidade estava a zero, repõe para 1
+                                if (linha.Cells[1].Value == null || linha.Cells[1].Value.ToString() == "0")
+                                    linha.Cells[1].Value = 1;
+
+                                // D. Recalcular a matemática dessa linha e atualizar totais em baixo
+                                RecalcularLinha(linha);
+                                AtualizarTotais();
+                            }
+                        }
+                    }
                 }
                 else
                 {

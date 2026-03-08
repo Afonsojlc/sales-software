@@ -175,6 +175,10 @@ namespace SoftwareVendas
 
         private void ConfirmarSelecao()
         {
+            // Proteção: Se o botão selecionar estiver invisível (Modo Gestão), 
+            // impedir que o utilizador selecione com "Duplo Clique" ou "Enter".
+            if (btnSelecionar.Visible == false) return;
+
             if (lstSugestoes.SelectedItem != null)
             {
                 ProdutoSelecionado = (ProdutoDTO)lstSugestoes.SelectedItem;
@@ -187,6 +191,12 @@ namespace SoftwareVendas
             }
         }
 
+        // O evento do novo botão (Deve estar vazio para depois fazeres a tua magia)
+        private void btnAdicionarProduto_Click(object? sender, EventArgs e)
+        {
+            // Depois explicarás o que queres que isto faça!
+        }
+
         public void DefinirPesquisa(string texto)
         {
             // Escreve na caixa de texto
@@ -194,6 +204,19 @@ namespace SoftwareVendas
 
             // Como tens o evento TextChanged, a pesquisa arranca sozinha!
             // Se quiseres garantir, podes chamar CarregarSugestoes(texto) aqui também.
+        }
+        public void PrepararModoVendas()
+        {
+            // Se vem da Fatura: Mostra Selecionar, Esconde Adicionar Produto
+            btnSelecionar.Visible = true;
+            btnAdicionarProduto.Visible = false;
+        }
+
+        public void PrepararModoGestao()
+        {
+            // Se vem do Menu: Esconde Selecionar, Mostra Adicionar Produto
+            btnSelecionar.Visible = false;
+            btnAdicionarProduto.Visible = true;
         }
     }
 

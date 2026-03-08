@@ -214,6 +214,9 @@ namespace SoftwareVendas
         {
             FormProdutos janelaProdutos = new FormProdutos();
 
+            // Diz que é o menu a chamar! (Esconde Selecionar, Mostra Adicionar Produto)
+            janelaProdutos.PrepararModoGestao();
+
             // Abre a janela de forma "Modal" (o utilizador não pode mexer no Menu enquanto não fechar os Produtos)
             janelaProdutos.ShowDialog();
         }
