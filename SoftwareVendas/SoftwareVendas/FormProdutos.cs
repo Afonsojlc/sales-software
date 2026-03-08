@@ -218,6 +218,32 @@ namespace SoftwareVendas
             btnSelecionar.Visible = false;
             btnAdicionarProduto.Visible = true;
         }
+
+        private void lblStock_MouseClick(object? sender, MouseEventArgs e)
+        {
+            // Verifica se foi o botão DIREITO do rato
+            if (e.Button == MouseButtons.Right)
+            {
+                // Verifica se há um produto selecionado na lista
+                if (lstSugestoes.SelectedItem != null)
+                {
+                    ProdutoDTO produtoClicado = (ProdutoDTO)lstSugestoes.SelectedItem;
+
+                    // Abre a nossa nova janela e passa-lhe o produto
+                    using (FormAtualizarStock frmStock = new FormAtualizarStock(produtoClicado))
+                    {
+                        if (frmStock.ShowDialog() == DialogResult.OK)
+                        {
+                            // Se a atualização correu bem, forçamos a pesquisa a correr novamente
+                            // para que a interface mostre logo o stock novo atualizado!
+                            string textoAtual = txtPesquisa.Text;
+                            txtPesquisa.Text = ""; // Apaga
+                            txtPesquisa.Text = textoAtual; // Escreve outra vez para ativar a pesquisa
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // A classe de dados (DTO) atualizada com Categoria
@@ -240,6 +266,8 @@ namespace SoftwareVendas
 
         
     }
+
+
 
 
 

@@ -133,3 +133,4 @@ C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\Software
 C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.pdb
 C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.genruntimeconfig.cache
 C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\ref\SoftwareVendas.dll
+C:\Users\Afonso Carvalho\Desktop\Software Vendas Pai\Interface\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormAtualizarStock.resources

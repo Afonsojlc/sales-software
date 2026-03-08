@@ -200,6 +200,7 @@
             lblStock.Size = new Size(39, 36);
             lblStock.TabIndex = 11;
             lblStock.Text = "...";
+            lblStock.MouseClick += lblStock_MouseClick;
             // 
             // lblPreco
             // 
@@ -277,7 +278,7 @@
             AutoScaleDimensions = new SizeF(15F, 37F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(2176, 1189);
+            ClientSize = new Size(2344, 1251);
             Controls.Add(btnAdicionarProduto);
             Controls.Add(btnCancelar);
             Controls.Add(btnSelecionar);
