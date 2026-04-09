@@ -1,40 +1,44 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace SoftwareVendas
 {
     public partial class FormAtualizarStock : Form
     {
-        string connectionString = @"Server=DESKTOP-P0S20G1\SQLEXPRESS;Database=Software_Vendas_Pai;Trusted_Connection=True;TrustServerCertificate=True;";
+        private readonly string connectionString = @"Server=DESKTOP-P0S20G1\SQLEXPRESS;Database=Software_Vendas_Pai;Trusted_Connection=True;TrustServerCertificate=True;";
+        private readonly string codigoProdutoParaAtualizar;
 
-        // Guardamos o código do produto que recebemos para usar no SQL
-        private string codigoProdutoParaAtualizar;
-
-        // O Construtor agora pede um ProdutoDTO quando a janela é criada!
         public FormAtualizarStock(ProdutoDTO produto)
         {
             InitializeComponent();
 
-            // Configurações visuais básicas da janela
+            codigoProdutoParaAtualizar = produto.Codigo;
+            ConfigurarInterface(produto);
+        }
+
+        #region Configuração da Interface
+
+        private void ConfigurarInterface(ProdutoDTO produto)
+        {
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.StartPosition = FormStartPosition.CenterParent;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Text = "Atualizar Stock";
 
-            // Preenche os dados visuais com o que veio da janela anterior
-            codigoProdutoParaAtualizar = produto.Codigo;
-            lblCodigo.Text = "Código: " + produto.Codigo;
+            lblCodigo.Text = $"Código: {produto.Codigo}";
             lblNome.Text = produto.Descricao;
-            lblStockAtual.Text = "Stock Atual: " + produto.Stock.ToString() + " unidades";
+            lblStockAtual.Text = $"Stock Atual: {produto.Stock} unidades";
 
-            // Configura a caixa de números
-            numNovoStock.Minimum = 0; // Não permite stock negativo
+            numNovoStock.Minimum = 0;
             numNovoStock.Maximum = 99999;
-            numNovoStock.Value = produto.Stock; // Começa com o valor atual para facilitar
+            numNovoStock.Value = produto.Stock;
         }
+
+        #endregion
+
+        #region Operações de Base de Dados
 
         private void btnGravar_Click(object? sender, EventArgs e)
         {
@@ -45,7 +49,6 @@ namespace SoftwareVendas
                 try
                 {
                     con.Open();
-                    // Atualiza o stock na Tabela Material
                     string query = "UPDATE Material SET Stock = @novoStock WHERE Codigo = @cod";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -56,23 +59,28 @@ namespace SoftwareVendas
                         cmd.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("Stock atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Inventário atualizado com sucesso.", "Operação Concluída", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Diz à janela anterior que correu tudo bem e fecha
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Erro ao atualizar stock: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Não foi possível atualizar o stock.\nDetalhe: {ex.Message}", "Erro de Gravação", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
+        #endregion
+
+        #region Eventos UI
 
         private void btnCancelar_Click(object? sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
+        #endregion
     }
 }

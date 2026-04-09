@@ -1,22 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\",
+  "WorkspaceRootPath": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\desktop\\software vendas pai\\interface\\softwarevendas\\softwarevendas\\formnovoproduto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\formnovoproduto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\documents\\github\\sales-software\\softwarevendas\\softwarevendas\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\desktop\\software vendas pai\\interface\\softwarevendas\\softwarevendas\\formprodutos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\formprodutos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\desktop\\software vendas pai\\interface\\softwarevendas\\softwarevendas\\formatualizarstock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\formatualizarstock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\desktop\\software vendas pai\\interface\\softwarevendas\\softwarevendas\\sessao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\sessao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\softwarevendas\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,55 +18,31 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "FormAtualizarStock.cs [Projeto]",
-              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormAtualizarStock.cs",
-              "RelativeDocumentMoniker": "SoftwareVendas\\FormAtualizarStock.cs",
-              "ToolTip": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormAtualizarStock.cs [Projeto]*",
-              "RelativeToolTip": "SoftwareVendas\\FormAtualizarStock.cs [Projeto]*",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\Form1.cs",
+              "RelativeDocumentMoniker": "SoftwareVendas\\Form1.cs",
+              "ToolTip": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\Form1.cs",
+              "RelativeToolTip": "SoftwareVendas\\Form1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAM8CAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-08T19:42:21.896Z",
-              "EditorCaption": " [Projeto]"
+              "WhenOpened": "2026-04-09T08:57:20.421Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "FormProdutos.cs [Projeto]",
-              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormProdutos.cs",
-              "RelativeDocumentMoniker": "SoftwareVendas\\FormProdutos.cs",
-              "ToolTip": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormProdutos.cs [Projeto]",
-              "RelativeToolTip": "SoftwareVendas\\FormProdutos.cs [Projeto]",
+              "Title": "Form1.cs [Projeto]",
+              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\Form1.cs",
+              "RelativeDocumentMoniker": "SoftwareVendas\\Form1.cs",
+              "ToolTip": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\Form1.cs [Projeto]",
+              "RelativeToolTip": "..\\..\\..\\..\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\Form1.cs [Projeto]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-08T19:31:28.651Z",
-              "EditorCaption": " [Projeto]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FormNovoProduto.cs [Projeto]",
-              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormNovoProduto.cs",
-              "RelativeDocumentMoniker": "SoftwareVendas\\FormNovoProduto.cs",
-              "ToolTip": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormNovoProduto.cs [Projeto]*",
-              "RelativeToolTip": "SoftwareVendas\\FormNovoProduto.cs [Projeto]*",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-08T19:12:35.705Z",
-              "EditorCaption": " [Projeto]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Sessao.cs",
-              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\Sessao.cs",
-              "RelativeDocumentMoniker": "SoftwareVendas\\Sessao.cs",
-              "ToolTip": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\Sessao.cs",
-              "RelativeToolTip": "SoftwareVendas\\Sessao.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-05T12:46:00.305Z"
+              "WhenOpened": "2026-04-09T08:57:11.531Z"
             }
           ]
         }

@@ -8,8 +8,8 @@ namespace SoftwareVendas
 {
     public partial class FormLogin : Form
     {
-        string connectionString = @"Server=DESKTOP-P0S20G1\SQLEXPRESS;Database=Software_Vendas_Pai;Trusted_Connection=True;TrustServerCertificate=True;";
-        bool modoPin = true;
+        private readonly string connectionString = @"Server=DESKTOP-P0S20G1\SQLEXPRESS;Database=Software_Vendas_Pai;Trusted_Connection=True;TrustServerCertificate=True;";
+        private bool modoPin = true;
 
         public FormLogin()
         {
@@ -19,13 +19,13 @@ namespace SoftwareVendas
 
         private void ConfigurarVisual()
         {
-            // --- MANTER A ESTÉTICA ORIGINAL (SEM ALTERAÇÕES) ---
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
 
             try
             {
                 string caminhoImagem = Path.Combine(Application.StartupPath, "fundo.jpg");
+
                 if (File.Exists(caminhoImagem))
                 {
                     this.BackgroundImage = Image.FromFile(caminhoImagem);
@@ -59,6 +59,7 @@ namespace SoftwareVendas
                 pnlModoEmail.Location = pnlModoPin.Location;
                 pnlModoEmail.Size = pnlModoPin.Size;
             }
+
             CentrarPainelCentral();
         }
 
@@ -83,19 +84,20 @@ namespace SoftwareVendas
             }
         }
 
-        private void FormLogin_Resize(object sender, EventArgs e)
+        private void FormLogin_Resize(object? sender, EventArgs e)
         {
             CentrarPainelCentral();
             AlinharPaineis();
         }
 
-        private void FormLogin_Load(object sender, EventArgs e)
+        private void FormLogin_Load(object? sender, EventArgs e)
         {
             CentrarPainelCentral();
             AlinharPaineis();
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        // Alterna para o modo de autenticação via Email
+        private void label2_Click(object? sender, EventArgs e)
         {
             modoPin = false;
             pnlModoPin.Visible = false;
@@ -103,7 +105,8 @@ namespace SoftwareVendas
             txtEmail.Focus();
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        // Alterna para o modo de autenticação via PIN
+        private void label3_Click(object? sender, EventArgs e)
         {
             modoPin = true;
             pnlModoEmail.Visible = false;
@@ -111,26 +114,25 @@ namespace SoftwareVendas
             txtPIN.Focus();
         }
 
-        // --- LÓGICA DE LOGIN (ATUALIZADA) ---
-
-        // 1. Entrar com PIN (Adicionei o campo Cargo à pesquisa)
-        private void btnEntrar_Click_1(object sender, EventArgs e)
+        private void btnEntrar_Click_1(object? sender, EventArgs e)
         {
-            ExecutarLogin("SELECT ID_Vendedor, Nome, Percentagem_Comissao, Cargo FROM Vendedores WHERE PIN = @p1 AND Ativo = 1", txtPIN.Text, null);
+            string query = "SELECT ID_Vendedor, Nome, Percentagem_Comissao, Cargo FROM Vendedores WHERE PIN = @p1 AND Ativo = 1";
+            ExecutarLogin(query, txtPIN.Text, null);
         }
 
-        // 2. Entrar com Email e Senha (Adicionei o campo Cargo à pesquisa)
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object? sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtEmail.Text) || string.IsNullOrWhiteSpace(txtSenha.Text))
             {
-                MessageBox.Show("Preencha email e senha.");
+                MessageBox.Show("Por favor, preencha o email e a senha.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // A query agora verifica Email E Senha
-            ExecutarLogin("SELECT ID_Vendedor, Nome, Percentagem_Comissao, Cargo FROM Vendedores WHERE Email = @p1 AND Senha = @p2 AND Ativo = 1", txtEmail.Text, txtSenha.Text);
+
+            string query = "SELECT ID_Vendedor, Nome, Percentagem_Comissao, Cargo FROM Vendedores WHERE Email = @p1 AND Senha = @p2 AND Ativo = 1";
+            ExecutarLogin(query, txtEmail.Text, txtSenha.Text);
         }
 
+        // Executa a autenticação do utilizador na base de dados de forma centralizada e segura.
         private void ExecutarLogin(string query, string p1, string? p2)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -138,40 +140,50 @@ namespace SoftwareVendas
                 try
                 {
                     con.Open();
-                    SqlCommand cmd = new SqlCommand(query, con);
 
-                    cmd.Parameters.AddWithValue("@p1", p1);
-                    // Aqui o C# já não reclama porque marcaste p2 como opcional (?)
-                    if (p2 != null) cmd.Parameters.AddWithValue("@p2", p2);
-
-                    SqlDataReader leitor = cmd.ExecuteReader();
-
-                    if (leitor.Read())
+                    using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        Sessao.ID_Vendedor = Convert.ToInt32(leitor["ID_Vendedor"]);
-                        Sessao.Nome = leitor["Nome"]?.ToString() ?? "Utilizador";
-                        Sessao.PercentagemComissao = Convert.ToDecimal(leitor["Percentagem_Comissao"]);
-                        Sessao.Cargo = leitor["Cargo"]?.ToString() ?? "Vendedor";
+                        cmd.Parameters.AddWithValue("@p1", p1);
 
-                        FormMenu menu = new FormMenu();
-                        menu.Show();
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Dados incorretos!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        if (p2 == null) txtPIN.Clear();
-                        else txtSenha.Clear();
+                        if (p2 != null)
+                        {
+                            cmd.Parameters.AddWithValue("@p2", p2);
+                        }
+
+                        using (SqlDataReader leitor = cmd.ExecuteReader())
+                        {
+                            if (leitor.Read())
+                            {
+                                // Inicialização dos dados da Sessão
+                                Sessao.ID_Vendedor = Convert.ToInt32(leitor["ID_Vendedor"]);
+                                Sessao.Nome = leitor["Nome"]?.ToString() ?? "Utilizador";
+                                Sessao.PercentagemComissao = Convert.ToDecimal(leitor["Percentagem_Comissao"]);
+                                Sessao.Cargo = leitor["Cargo"]?.ToString() ?? "Vendedor";
+
+                                FormMenu menu = new FormMenu();
+                                menu.Show();
+                                this.Hide();
+                            }
+                            else
+                            {
+                                MessageBox.Show("As credenciais inseridas estão incorretas.", "Falha na Autenticação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                                if (p2 == null)
+                                    txtPIN.Clear();
+                                else
+                                    txtSenha.Clear();
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Erro de conexão: " + ex.Message);
+                    MessageBox.Show($"Ocorreu um erro de comunicação com a base de dados.\nDetalhes: {ex.Message}", "Erro de Conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        private void btnSairApp_Click(object sender, EventArgs e)
+        private void btnSairApp_Click(object? sender, EventArgs e)
         {
             DialogResult resposta = MessageBox.Show(
                 "Tem a certeza que deseja encerrar a aplicação?",
@@ -186,13 +198,16 @@ namespace SoftwareVendas
             }
         }
 
-        private void txtPIN_KeyDown(object sender, KeyEventArgs e)
+        private void txtPIN_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                if (pnlModoPin.Visible) btnEntrar_Click_1(sender, e);
-                else button1_Click(sender, e);
+
+                if (pnlModoPin.Visible)
+                    btnEntrar_Click_1(sender, e);
+                else
+                    button1_Click(sender, e);
             }
         }
     }
