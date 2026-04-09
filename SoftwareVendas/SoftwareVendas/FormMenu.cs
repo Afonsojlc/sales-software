@@ -17,6 +17,12 @@ namespace SoftwareVendas
                 btnProdutos.Click -= btnProdutos_Click;
                 btnProdutos.Click += btnProdutos_Click;
             }
+
+            if (btnClientes != null)
+            {
+                btnClientes.Click -= btnClientes_Click;
+                btnClientes.Click += btnClientes_Click;
+            }
         }
 
         private void ConfigurarVisual()
@@ -199,6 +205,14 @@ namespace SoftwareVendas
             {
                 janelaProdutos.PrepararModoGestao();
                 janelaProdutos.ShowDialog();
+            }
+        }
+
+        private void btnClientes_Click(object? sender, EventArgs e)
+        {
+            using (FormClientes janelaClientes = new FormClientes())
+            {
+                janelaClientes.ShowDialog();
             }
         }
 
