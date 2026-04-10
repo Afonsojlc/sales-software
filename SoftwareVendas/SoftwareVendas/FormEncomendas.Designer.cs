@@ -36,6 +36,8 @@
             btnPesquisar = new Button();
             groupBox1 = new GroupBox();
             groupBox2 = new GroupBox();
+            btnEliminar = new Button();
+            btnNovaEncomenda = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvEncomendas).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -118,20 +120,48 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(btnEliminar);
+            groupBox2.Controls.Add(btnNovaEncomenda);
             groupBox2.Controls.Add(dgvEncomendas);
             groupBox2.Font = new Font("Times New Roman", 13.875F, FontStyle.Bold, GraphicsUnit.Point, 0);
             groupBox2.Location = new Point(21, 228);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(2162, 760);
+            groupBox2.Size = new Size(2162, 832);
             groupBox2.TabIndex = 12;
             groupBox2.TabStop = false;
             groupBox2.Text = "Encomendas";
+            // 
+            // btnEliminar
+            // 
+            btnEliminar.BackColor = Color.Firebrick;
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEliminar.ForeColor = SystemColors.ButtonHighlight;
+            btnEliminar.Location = new Point(758, 750);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.Size = new Size(598, 64);
+            btnEliminar.TabIndex = 28;
+            btnEliminar.Text = "Eliminar Encomenda Selecionada";
+            btnEliminar.UseVisualStyleBackColor = false;
+            // 
+            // btnNovaEncomenda
+            // 
+            btnNovaEncomenda.BackColor = Color.ForestGreen;
+            btnNovaEncomenda.FlatStyle = FlatStyle.Flat;
+            btnNovaEncomenda.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnNovaEncomenda.ForeColor = SystemColors.ButtonHighlight;
+            btnNovaEncomenda.Location = new Point(111, 750);
+            btnNovaEncomenda.Name = "btnNovaEncomenda";
+            btnNovaEncomenda.Size = new Size(594, 64);
+            btnNovaEncomenda.TabIndex = 27;
+            btnNovaEncomenda.Text = "Adicionar Nova Encomenda";
+            btnNovaEncomenda.UseVisualStyleBackColor = false;
             // 
             // FormEncomendas
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2218, 1106);
+            ClientSize = new Size(2218, 1162);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "FormEncomendas";
@@ -153,5 +183,7 @@
         private Button btnPesquisar;
         private GroupBox groupBox1;
         private GroupBox groupBox2;
+        private Button btnNovaEncomenda;
+        private Button btnEliminar;
     }
 }

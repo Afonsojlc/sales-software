@@ -32,7 +32,7 @@ namespace SoftwareVendas
             CarregarTodosClientes();
         }
 
-        #region 1. Configuração e Responsividade (Auto-Resize)
+        #region Configuração e Responsividade (Auto-Resize)
 
         private void ConfigurarInterface()
         {
@@ -121,7 +121,6 @@ namespace SoftwareVendas
                 dgvClientes.Columns["Email"].Width = 330;
             }
 
-            // O TELEFONE AGORA TEM MAIS ESPAÇO PARA O "+351"
             if (dgvClientes.Columns["Telefone"] != null)
             {
                 dgvClientes.Columns["Telefone"].HeaderText = "Telefone";
@@ -148,7 +147,7 @@ namespace SoftwareVendas
 
         #endregion
 
-        #region 2. Pesquisa e Sugestões (Autocomplete)
+        #region Pesquisa e Sugestões (Autocomplete)
 
         private void CarregarFiltros()
         {
@@ -283,7 +282,7 @@ namespace SoftwareVendas
 
         #endregion
 
-        #region 3. Histórico de Compras
+        #region Histórico de Compras
 
         private void dgvClientes_SelectionChanged(object? sender, EventArgs e)
         {

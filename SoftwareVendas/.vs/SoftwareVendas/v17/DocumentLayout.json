@@ -1,18 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\",
+  "WorkspaceRootPath": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\documents\\github\\sales-software\\softwarevendas\\softwarevendas\\formencomendas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\desktop\\software vendas pai\\interface\\softwarevendas\\softwarevendas\\formencomendas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\formencomendas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\documents\\github\\sales-software\\softwarevendas\\softwarevendas\\formencomendas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\desktop\\software vendas pai\\interface\\softwarevendas\\softwarevendas\\formencomendas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\formencomendas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\documents\\github\\sales-software\\softwarevendas\\softwarevendas\\formmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\formmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|c:\\users\\afonso carvalho\\desktop\\software vendas pai\\interface\\softwarevendas\\softwarevendas\\formnovoproduto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{FF8C1096-6D54-4B07-AF26-7153C4077315}|SoftwareVendas\\SoftwareVendas.csproj|solutionrelative:softwarevendas\\formnovoproduto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,15 +22,27 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FormNovoProduto.cs [Projeto]",
+              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormNovoProduto.cs",
+              "RelativeDocumentMoniker": "SoftwareVendas\\FormNovoProduto.cs",
+              "ToolTip": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormNovoProduto.cs [Projeto]",
+              "RelativeToolTip": "SoftwareVendas\\FormNovoProduto.cs [Projeto]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-10T18:15:44.23Z",
+              "EditorCaption": " [Projeto]"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "FormEncomendas.cs [Projeto]",
-              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\FormEncomendas.cs",
+              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormEncomendas.cs",
               "RelativeDocumentMoniker": "SoftwareVendas\\FormEncomendas.cs",
-              "ToolTip": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\FormEncomendas.cs [Projeto]",
+              "ToolTip": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormEncomendas.cs [Projeto]",
               "RelativeToolTip": "SoftwareVendas\\FormEncomendas.cs [Projeto]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-10T11:26:16.126Z",
@@ -40,25 +52,14 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "FormEncomendas.cs",
-              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\FormEncomendas.cs",
+              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormEncomendas.cs",
               "RelativeDocumentMoniker": "SoftwareVendas\\FormEncomendas.cs",
-              "ToolTip": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\FormEncomendas.cs",
+              "ToolTip": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\FormEncomendas.cs",
               "RelativeToolTip": "SoftwareVendas\\FormEncomendas.cs",
-              "ViewState": "AgIAAAQBAAAAAAAAAAAIwDIBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAKwBAAAAAAAAAAAUwNgBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-10T11:24:53.789Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "FormMenu.cs",
-              "DocumentMoniker": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\FormMenu.cs",
-              "RelativeDocumentMoniker": "SoftwareVendas\\FormMenu.cs",
-              "ToolTip": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\FormMenu.cs",
-              "RelativeToolTip": "SoftwareVendas\\FormMenu.cs",
-              "ViewState": "AgIAAK8AAAAAAAAAAAAwwOYAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-10T11:25:19.621Z"
+              "WhenOpened": "2026-04-10T11:24:53.789Z",
+              "EditorCaption": ""
             }
           ]
         }
