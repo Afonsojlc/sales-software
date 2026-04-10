@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "o197mnusMys=",
+  "dgSpecHash": "BenNlGWMf38=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Afonso Carvalho\\Desktop\\Software Vendas Pai\\Interface\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj",
+  "projectFilePath": "C:\\Users\\Afonso Carvalho\\Documents\\GitHub\\sales-software\\SoftwareVendas\\SoftwareVendas\\SoftwareVendas.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Afonso Carvalho\\.nuget\\packages\\azure.core\\1.50.0\\azure.core.1.50.0.nupkg.sha512",
     "C:\\Users\\Afonso Carvalho\\.nuget\\packages\\azure.identity\\1.17.1\\azure.identity.1.17.1.nupkg.sha512",

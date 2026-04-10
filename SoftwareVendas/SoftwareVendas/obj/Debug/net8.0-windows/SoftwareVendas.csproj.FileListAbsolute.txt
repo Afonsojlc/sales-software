@@ -136,3 +136,8 @@ C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\Software
 C:\Users\Afonso Carvalho\Desktop\Software Vendas Pai\Interface\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormAtualizarStock.resources
 C:\Users\Afonso Carvalho\Desktop\Software Vendas Pai\Interface\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormNovoProduto.resources
 C:\Users\Afonso Carvalho\Desktop\Software Vendas Pai\Interface\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormClientes.resources
+C:\Users\Afonso Carvalho\Desktop\Software Vendas Pai\Interface\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormEncomendas.resources
+C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormAtualizarStock.resources
+C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormClientes.resources
+C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormEncomendas.resources
+C:\Users\Afonso Carvalho\Documents\GitHub\sales-software\SoftwareVendas\SoftwareVendas\obj\Debug\net8.0-windows\SoftwareVendas.FormNovoProduto.resources

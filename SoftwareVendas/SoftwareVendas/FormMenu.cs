@@ -23,6 +23,12 @@ namespace SoftwareVendas
                 btnClientes.Click -= btnClientes_Click;
                 btnClientes.Click += btnClientes_Click;
             }
+
+            if (btnEncomendas != null)
+            {
+                btnEncomendas.Click -= btnEncomendas_Click;
+                btnEncomendas.Click += btnEncomendas_Click;
+            }
         }
 
         private void ConfigurarVisual()
@@ -213,6 +219,14 @@ namespace SoftwareVendas
             using (FormClientes janelaClientes = new FormClientes())
             {
                 janelaClientes.ShowDialog();
+            }
+        }
+
+        private void btnEncomendas_Click(object? sender, EventArgs e)
+        {
+            using (FormEncomendas formEnc = new FormEncomendas())
+            {
+                formEnc.ShowDialog();
             }
         }
 
