@@ -34,7 +34,7 @@ namespace SoftwareVendas
                 dgvEncomendas.CellFormatting += dgvEncomendas_CellFormatting;
             }
 
-            // Ligar os novos botões via código (se já existirem no Design com estes nomes)
+            // Ligar os novos botões via código
             if (this.Controls.Find("btnNovaEncomenda", true).Length > 0)
             {
                 Button btnNova = (Button)this.Controls.Find("btnNovaEncomenda", true)[0];
@@ -218,7 +218,7 @@ namespace SoftwareVendas
                         }
                     }
                 }
-                catch { }
+                catch { /* Falha silenciosa no Autocomplete permitida */ }
             }
 
             txtPesquisa.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -241,9 +241,11 @@ namespace SoftwareVendas
 
         private void txtPesquisa_Click(object? sender, EventArgs e)
         {
-            txtPesquisa.Clear();
-            txtPesquisa.ForeColor = Color.Black;
-            SendKeys.Send("{DOWN}");
+            if (txtPesquisa.Text.StartsWith("Escreva"))
+            {
+                txtPesquisa.Clear();
+                txtPesquisa.ForeColor = Color.Black;
+            }
         }
 
         private void txtPesquisa_Leave(object? sender, EventArgs e)
@@ -393,7 +395,14 @@ namespace SoftwareVendas
             if (e.RowIndex >= 0)
             {
                 int numeroEncomenda = Convert.ToInt32(dgvEncomendas.Rows[e.RowIndex].Cells["Nº Venda"].Value);
-                MessageBox.Show($"Clicaste na encomenda nº {numeroEncomenda}!\nAqui vai abrir o formulário de detalhes no futuro próximo.", "Em construção...");
+
+                using (FormDetalhesEncomenda frmDetalhes = new FormDetalhesEncomenda(numeroEncomenda))
+                {
+                    if (frmDetalhes.ShowDialog() == DialogResult.OK)
+                    {
+                        btnPesquisar.PerformClick();
+                    }
+                }
             }
         }
 
@@ -403,19 +412,15 @@ namespace SoftwareVendas
 
         private void btnNovaEncomenda_Click(object? sender, EventArgs e)
         {
-            // Abre o formulário da Fatura (que tu chamaste de Form1)
             using (Form1 formNovaVenda = new Form1())
             {
                 formNovaVenda.ShowDialog();
-
-                // Quando a janela da venda fechar, recarregamos a grelha para mostrar a nova fatura!
                 btnPesquisar.PerformClick();
             }
         }
 
         private void btnEliminar_Click(object? sender, EventArgs e)
         {
-            // 1. Verifica se há alguma linha selecionada
             if (dgvEncomendas.CurrentRow == null)
             {
                 MessageBox.Show("Por favor, selecione a encomenda que deseja eliminar clicando nela primeiro.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -425,42 +430,58 @@ namespace SoftwareVendas
             int numeroEncomenda = Convert.ToInt32(dgvEncomendas.CurrentRow.Cells["Nº Venda"].Value);
             string nomeCliente = dgvEncomendas.CurrentRow.Cells["Cliente"].Value?.ToString() ?? "Desconhecido";
 
-            // 2. Pergunta de Segurança Rigorosa
             DialogResult resposta = MessageBox.Show(
-                $"Atenção: Tem a certeza absoluta que deseja eliminar a Encomenda Nº {numeroEncomenda} do cliente '{nomeCliente}'?\n\nEsta ação irá apagar definitivamente todos os produtos associados a esta venda e não poderá ser revertida!",
+                $"Atenção: Tem a certeza absoluta que deseja eliminar a Encomenda Nº {numeroEncomenda} do cliente '{nomeCliente}'?\n\nEsta ação irá apagar definitivamente esta fatura e devolver os produtos ao stock. Não pode ser revertida!",
                 "Confirmar Eliminação",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Stop,
-                MessageBoxDefaultButton.Button2); // O botão "Não" fica selecionado por defeito para evitar acidentes
+                MessageBoxDefaultButton.Button2);
 
             if (resposta == DialogResult.Yes)
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
+                    con.Open();
+                    // Usamos uma Transação SQL profissional
+                    SqlTransaction transacao = con.BeginTransaction();
+
                     try
                     {
-                        con.Open();
+                        // 1. Otimização Crítica: Devolver os produtos ao Stock antes de os apagar
+                        string queryReverterStock = @"
+                            UPDATE Material SET Stock = Stock + L.Quantidade
+                            FROM Material M INNER JOIN Linha_Encomenda L ON M.Codigo = L.Codigo_Material
+                            WHERE L.NE = @id";
 
-                        // 3. A Magia da Integridade Referencial:
-                        // O SQL exige que apaguemos primeiro os filhos (Linha_Encomenda) para podermos apagar o Pai (Encomenda)
+                        using (SqlCommand cmdStock = new SqlCommand(queryReverterStock, con, transacao))
+                        {
+                            cmdStock.Parameters.AddWithValue("@id", numeroEncomenda);
+                            cmdStock.ExecuteNonQuery();
+                        }
+
+                        // 2. Apagar Filhos e Pai (Integridade Referencial)
                         string queryEliminar = @"
                             DELETE FROM Linha_Encomenda WHERE NE = @id;
                             DELETE FROM Encomenda WHERE Numero_Encomenda = @id;";
 
-                        using (SqlCommand cmd = new SqlCommand(queryEliminar, con))
+                        using (SqlCommand cmdEliminar = new SqlCommand(queryEliminar, con, transacao))
                         {
-                            cmd.Parameters.AddWithValue("@id", numeroEncomenda);
-                            cmd.ExecuteNonQuery();
+                            cmdEliminar.Parameters.AddWithValue("@id", numeroEncomenda);
+                            cmdEliminar.ExecuteNonQuery();
                         }
 
-                        MessageBox.Show("A encomenda foi eliminada com sucesso.", "Operação Concluída", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // Se tudo correu bem, guardamos as alterações definitivas
+                        transacao.Commit();
 
-                        // 4. Atualiza a lista automaticamente
+                        MessageBox.Show("A encomenda foi eliminada com sucesso e o stock foi reposto.", "Operação Concluída", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                         btnPesquisar.PerformClick();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Ocorreu um erro ao tentar eliminar a encomenda:\n{ex.Message}", "Erro de Base de Dados", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        // Se houver erro de energia ou SQL, reverte tudo!
+                        transacao.Rollback();
+                        MessageBox.Show($"Ocorreu um erro ao tentar eliminar a encomenda:\n{ex.Message}", "Erro Crítico", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -468,6 +489,6 @@ namespace SoftwareVendas
 
         #endregion
 
-        private void btnPesquisar_Click_1(object? sender, EventArgs e) { }
+        private void btnPesquisar_Click_1(object? sender, EventArgs e){ }
     }
 }

@@ -9,6 +9,8 @@ namespace SoftwareVendas
     {
         private ContextMenuStrip? menuGrelha;
         private readonly string connectionString = @"Server=DESKTOP-P0S20G1\SQLEXPRESS;Database=Software_Vendas_Pai;Trusted_Connection=True;TrustServerCertificate=True;";
+        private bool modoModificacao = false;
+        private int idEncomendaEditar = 0;
 
         public Form1()
         {
@@ -202,9 +204,26 @@ namespace SoftwareVendas
                 return;
             }
 
+            // Cálculos preliminares
             string textoTotal = lblTotalPagar.Text?.Replace("€", "").Trim() ?? "0";
             decimal.TryParse(textoTotal, System.Globalization.NumberStyles.Currency, null, out decimal valorTotalVenda);
             decimal.TryParse(txtDescontoFinal.Text, out decimal descontoGlobal);
+
+            // --- VERIFICAÇÃO PROFISSIONAL ANTES DE ABRIR A BASE DE DADOS ---
+            if (modoModificacao)
+            {
+                DialogResult respostaConfirmacao = MessageBox.Show(
+                    $"Está prestes a modificar a Encomenda Nº {idEncomendaEditar}.\n\nO novo valor total será de {valorTotalVenda.ToString("C2")}.\nO inventário (stock) será reajustado automaticamente.\n\nConfirma estas alterações?",
+                    "Confirmar Alteração",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2); // Foca no 'Não' por segurança para evitar cliques acidentais
+
+                if (respostaConfirmacao == DialogResult.No)
+                {
+                    return; // Cancela silenciosamente e o utilizador pode continuar a editar a grelha
+                }
+            }
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -235,21 +254,58 @@ namespace SoftwareVendas
                     }
 
                     // Registar Encomenda
-                    string queryEnc = @"
-                        INSERT INTO Encomenda (Data_Encomenda, Valor_Total, Estado, ID_Cliente, Desconto_Global) 
-                        VALUES (@data, @total, 'Fechada', @idCliente, @descGlobal);
-                        SELECT SCOPE_IDENTITY();";
-
                     int numEncomenda = 0;
-                    using (SqlCommand cmdEnc = new SqlCommand(queryEnc, con, transacao))
-                    {
-                        cmdEnc.Parameters.AddWithValue("@data", dtpDataEncomenda.Value);
-                        cmdEnc.Parameters.AddWithValue("@total", valorTotalVenda);
-                        cmdEnc.Parameters.AddWithValue("@idCliente", idCliente);
-                        cmdEnc.Parameters.AddWithValue("@descGlobal", descontoGlobal);
 
-                        object? resEncomenda = cmdEnc.ExecuteScalar();
-                        numEncomenda = resEncomenda != null ? Convert.ToInt32(resEncomenda) : 0;
+                    if (modoModificacao)
+                    {
+                        numEncomenda = idEncomendaEditar;
+
+                        // UPDATE na Encomenda Principal
+                        string queryUpdate = "UPDATE Encomenda SET Valor_Total = @total, Desconto_Global = @descGlobal WHERE Numero_Encomenda = @id";
+                        using (SqlCommand cmdUpdate = new SqlCommand(queryUpdate, con, transacao))
+                        {
+                            cmdUpdate.Parameters.AddWithValue("@total", valorTotalVenda);
+                            cmdUpdate.Parameters.AddWithValue("@descGlobal", descontoGlobal);
+                            cmdUpdate.Parameters.AddWithValue("@id", numEncomenda);
+                            cmdUpdate.ExecuteNonQuery();
+                        }
+
+                        // REVERTER STOCK DAS LINHAS ANTIGAS (Muito importante!)
+                        string queryReverterStock = @"
+                    UPDATE Material SET Stock = Stock + L.Quantidade
+                    FROM Material M INNER JOIN Linha_Encomenda L ON M.Codigo = L.Codigo_Material
+                    WHERE L.NE = @id";
+                        using (SqlCommand cmdReverter = new SqlCommand(queryReverterStock, con, transacao))
+                        {
+                            cmdReverter.Parameters.AddWithValue("@id", numEncomenda);
+                            cmdReverter.ExecuteNonQuery();
+                        }
+
+                        // APAGAR LINHAS ANTIGAS PARA INSERIR AS NOVAS A SEGUIR
+                        string queryApagarLinhas = "DELETE FROM Linha_Encomenda WHERE NE = @id";
+                        using (SqlCommand cmdApagar = new SqlCommand(queryApagarLinhas, con, transacao))
+                        {
+                            cmdApagar.Parameters.AddWithValue("@id", numEncomenda);
+                            cmdApagar.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        string queryEnc = @"
+                    INSERT INTO Encomenda (Data_Encomenda, Valor_Total, Estado, ID_Cliente, Desconto_Global) 
+                    VALUES (@data, @total, 'Fechada', @idCliente, @descGlobal);
+                    SELECT SCOPE_IDENTITY();";
+
+                        using (SqlCommand cmdEnc = new SqlCommand(queryEnc, con, transacao))
+                        {
+                            cmdEnc.Parameters.AddWithValue("@data", dtpDataEncomenda.Value);
+                            cmdEnc.Parameters.AddWithValue("@total", valorTotalVenda);
+                            cmdEnc.Parameters.AddWithValue("@idCliente", idCliente);
+                            cmdEnc.Parameters.AddWithValue("@descGlobal", descontoGlobal);
+
+                            object? resEncomenda = cmdEnc.ExecuteScalar();
+                            numEncomenda = resEncomenda != null ? Convert.ToInt32(resEncomenda) : 0;
+                        }
                     }
 
                     // Processar Linhas e Abater Stock
@@ -279,10 +335,10 @@ namespace SoftwareVendas
 
                         // Registar a linha
                         string queryLinha = @"
-                            INSERT INTO Linha_Encomenda 
-                            (NE, Linha_Encomenda, Quantidade, Descricao, Preco, Desconto, Imposto, Codigo_Material, Desconto_Texto)
-                            VALUES 
-                            (@ne, @numLinha, @qtd, @desc, @preco, 0, @iva, @codMat, @txtDesc)";
+                    INSERT INTO Linha_Encomenda 
+                    (NE, Linha_Encomenda, Quantidade, Descricao, Preco, Desconto, Imposto, Codigo_Material, Desconto_Texto)
+                    VALUES 
+                    (@ne, @numLinha, @qtd, @desc, @preco, 0, @iva, @codMat, @txtDesc)";
 
                         using (SqlCommand cmdLinha = new SqlCommand(queryLinha, con, transacao))
                         {
@@ -312,9 +368,19 @@ namespace SoftwareVendas
 
                     // Commit da Transação
                     transacao.Commit();
-                    MessageBox.Show($"Venda n.º {numEncomenda} registada e inventário atualizado com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    LimparVenda();
+                    // --- MENSAGENS FINAIS ADAPTADAS AO MODO ---
+                    if (modoModificacao)
+                    {
+                        MessageBox.Show($"As alterações na encomenda Nº {numEncomenda} foram guardadas e o inventário foi atualizado com sucesso.", "Alteração Concluída", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.DialogResult = DialogResult.OK; // Dá sinal verde à janela anterior
+                        this.Close(); // Fecha a janela de edição
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Venda n.º {numEncomenda} registada e inventário atualizado com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LimparVenda();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -708,6 +774,78 @@ namespace SoftwareVendas
             btn.ForeColor = Color.White;
             btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btn.Cursor = Cursors.Hand;
+        }
+
+        public void PrepararModoModificacao(int idEncomenda)
+        {
+            this.modoModificacao = true;
+            this.idEncomendaEditar = idEncomenda;
+            this.Text = "Modificar Encomenda Nº " + idEncomenda;
+
+            // Procura o botão de finalizar e muda o texto e cor
+            Control[] btnControls = this.Controls.Find("btnFinalizar", true);
+            if (btnControls.Length > 0 && btnControls[0] is Button btnFinalizar)
+            {
+                btnFinalizar.Text = "ALTERAR";
+                btnFinalizar.BackColor = Color.FromArgb(243, 156, 18); // Laranja para alertar que é edição
+            }
+
+            // Carregar os dados da encomenda para a grelha
+            CarregarDadosParaEdicao(idEncomenda);
+        }
+
+        private void CarregarDadosParaEdicao(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    // 1. Carregar Cliente e Desconto
+                    string queryCliente = "SELECT C.NIF, C.Nome_Cliente, E.Desconto_Global FROM Encomenda E INNER JOIN Clientes C ON E.ID_Cliente = C.ID_Cliente WHERE E.Numero_Encomenda = @id";
+                    using (SqlCommand cmd = new SqlCommand(queryCliente, con))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        using (SqlDataReader rd = cmd.ExecuteReader())
+                        {
+                            if (rd.Read())
+                            {
+                                txtNIF.Text = rd["NIF"].ToString();
+                                txtNomeCliente.Text = rd["Nome_Cliente"].ToString();
+                                txtDescontoFinal.Text = rd["Desconto_Global"].ToString();
+                            }
+                        }
+                    }
+
+                    // 2. Carregar as Linhas para a Grelha
+                    string queryLinhas = "SELECT Codigo_Material, Quantidade, Descricao, Preco, Desconto_Texto FROM Linha_Encomenda WHERE NE = @id";
+                    using (SqlCommand cmd2 = new SqlCommand(queryLinhas, con))
+                    {
+                        cmd2.Parameters.AddWithValue("@id", id);
+                        using (SqlDataReader rd2 = cmd2.ExecuteReader())
+                        {
+                            while (rd2.Read())
+                            {
+                                string cod = rd2["Codigo_Material"].ToString();
+                                int qtd = Convert.ToInt32(rd2["Quantidade"]);
+                                string desc = rd2["Descricao"].ToString();
+                                decimal preco = Convert.ToDecimal(rd2["Preco"]);
+                                string descTxt = rd2["Desconto_Texto"].ToString();
+
+                                decimal precoComDesconto = CalcularDescontoComposto(preco, descTxt);
+                                decimal total = precoComDesconto * qtd;
+
+                                dgvItens.Rows.Add(cod, qtd, desc, preco.ToString("C2"), descTxt, total.ToString("C2"));
+                            }
+                        }
+                    }
+                    AtualizarTotais();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao carregar dados para edição: " + ex.Message);
+                }
+            }
         }
 
         // Handles não utilizados deixados vazios por dependência do designer

@@ -58,8 +58,6 @@ namespace SoftwareVendas
                 }
                 catch
                 {
-                    // Degradação graciosa (Graceful Degradation): 
-                    // Se falhar a extração de categorias, o formulário abre sem autocomplete, não bloqueando a operação principal.
                 }
             }
 
